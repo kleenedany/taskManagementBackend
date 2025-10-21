@@ -35,7 +35,7 @@ public class TaskController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@GetMapping("/task/{project}")
+	@GetMapping("/task")
 	public List<TaskPO> loadProjectTasks(@RequestBody ProjectPO project) {
 		return taskService.loadProjectTasks(project);
 	}
