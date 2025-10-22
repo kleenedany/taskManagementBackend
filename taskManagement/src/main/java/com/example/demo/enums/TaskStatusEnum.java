@@ -1,6 +1,7 @@
 package com.example.demo.enums;
 
-public enum TaskStatus {
+/** Enum for the task status */
+public enum TaskStatusEnum {
 	OPEN,
 	IN_PROGRESS,
 	DONE

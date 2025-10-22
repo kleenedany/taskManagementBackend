@@ -7,11 +7,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDTO {
+public class UserDto {
 	
 	private Integer id;
 	private String firstName;
 	private String lastName;
-	private List<TaskDTO> tasks;
+	private List<TaskDto> tasks;
 
 }

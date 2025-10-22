@@ -8,8 +8,7 @@ import com.example.demo.models.TaskPO;
 import java.util.List;
 
 
-
-
+/** Repository for TASK table database access */
 @Repository
 public interface TaskRepository extends JpaRepository<TaskPO, Integer> {
 	List<TaskPO> findByProject(ProjectPO project);

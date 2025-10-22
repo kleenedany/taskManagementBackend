@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -10,8 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.models.ProjectPO;
-import com.example.demo.models.TaskPO;
+import com.example.demo.dto.TaskDto;
 import com.example.demo.service.TaskService;
 
 @RestController
@@ -24,9 +22,9 @@ public class TaskController {
 	}
 	
 	@PostMapping("/task/{id}")
-	public ResponseEntity<TaskPO> updateTask(@PathVariable Integer id, @RequestBody TaskPO task) {
-		TaskPO updatedTask = taskService.updateTask(id, task);
-		return ResponseEntity.ok(updatedTask);
+	public ResponseEntity<Void> updateTask(@PathVariable Integer id, @RequestBody TaskDto task) {
+		this.taskService.updateTask(id, task);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/task/{id}")
@@ -35,13 +33,15 @@ public class TaskController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@GetMapping("/task")
-	public List<TaskPO> loadProjectTasks(@RequestBody ProjectPO project) {
-		return taskService.loadProjectTasks(project);
+	@PostMapping("/task") 
+	public ResponseEntity<Void> createTask(@PathVariable Integer projectId, @RequestBody TaskDto task) {
+		this.taskService.createTask(task, projectId);
+		return ResponseEntity.noContent().build();
 	}
 	
-	@PostMapping("/task") 
-	public TaskPO createTask(@RequestBody TaskPO task) {
-		return taskService.createTask(task);
+	@GetMapping("/task")
+	public ResponseEntity<TaskDto> loadTask(@PathVariable Integer id) {
+		TaskDto taskDto = this.taskService.loadTask(id);
+		return ResponseEntity.ok(taskDto);
 	}
 }

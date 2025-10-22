@@ -7,9 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProjectDTO {
+public class ProjectDto {
 	
 	private Integer id;
-	private String name;
-	private List<TaskDTO> tasks;
+	private String title;
+	private List<TaskDto> tasks;
 }

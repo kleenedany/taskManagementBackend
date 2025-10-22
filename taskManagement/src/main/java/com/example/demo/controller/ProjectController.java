@@ -1,7 +1,9 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,7 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.models.ProjectPO;
+import com.example.demo.dto.ProjectDto;
 import com.example.demo.service.ProjectService;
 
 @RestController
@@ -23,25 +25,36 @@ public class ProjectController {
 	}
 	
 	@GetMapping("/projects")
-	public List<ProjectPO> loadAllProjects() {
-		return projectService.loadAllProjects();
+	public ResponseEntity<List<ProjectDto>> loadAllProjects() {
+		List<ProjectDto> projectListDto = this.projectService.loadAllProjects();
+		return ResponseEntity.ok(projectListDto);
 	}
 	
-	@PostMapping("/projects")
-	public ProjectPO createProject(@RequestBody ProjectPO project) {
-		return projectService.createProject(project);
+	@PostMapping(value = "/projects", consumes = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<Void> createProject(@RequestBody ProjectDto project) {
+		if(project.getTasks() == null) {
+			project.setTasks(new ArrayList<>());
+		}
+		this.projectService.createProject(project);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("/projects/{id}")
 	public ResponseEntity<Void> deleteProject(@PathVariable Integer id) {
-		projectService.deleteProject(id);
+		this.projectService.deleteProject(id);
 		return ResponseEntity.noContent().build();
 	}
 	
 	@PostMapping("/projects/{id}")
-	public ResponseEntity<ProjectPO> updateProject(@PathVariable Integer id, @RequestBody ProjectPO project){
-		ProjectPO updatedTask = projectService.updateProject(id, project);
-		return ResponseEntity.ok(updatedTask);
+	public ResponseEntity<Void> updateProject(@PathVariable Integer id, @RequestBody ProjectDto project){
+		this.projectService.updateProject(id, project);
+		return ResponseEntity.noContent().build();
+	}
+	
+	@GetMapping("/project")
+	public ResponseEntity<ProjectDto> loadProject(@PathVariable Integer id) {
+		ProjectDto projectDto = this.projectService.loadProject(id);
+		return ResponseEntity.ok(projectDto);
 	}
 
 }

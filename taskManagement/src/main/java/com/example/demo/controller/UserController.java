@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.dto.UserDto;
 import com.example.demo.models.UserPO;
 import com.example.demo.service.UserService;
 
@@ -22,15 +23,15 @@ public class UserController {
 		this.userService = userService;
 	}
 	
-	@GetMapping("/user")
-		public List<UserPO> loadAllUser() {
-			return userService.loadAllUsers();
+	@GetMapping("/users")
+		public ResponseEntity<List<UserDto>> loadAllUser() {
+			return ResponseEntity.ok(this.userService.loadAllUsers());
 		}
 	
 	@PostMapping("user/{id}")
-	public ResponseEntity<UserPO> updateUser(@PathVariable Integer id, @RequestBody UserPO user) {
-		UserPO updatedUser = userService.updateUser(id, user);
-		return ResponseEntity.ok(updatedUser);
+	public ResponseEntity<Void> updateUser(@PathVariable Integer id, @RequestBody UserDto user) {
+		userService.updateUser(id, user);
+		return ResponseEntity.noContent().build();
 	}
 	
 	@DeleteMapping("user/{id}")
@@ -40,9 +41,16 @@ public class UserController {
 	}
 	
 	@PostMapping("/user")
-	public UserPO createUser(@RequestBody UserPO user) {
-		return userService.createUser(user);
+	public ResponseEntity<Void> createUser(@RequestBody UserPO user) {
+		return ResponseEntity.noContent().build();
 	}
+	
+	@GetMapping("/user")
+	public ResponseEntity<UserDto> loadUser(@PathVariable Integer id) {
+		UserDto userDto = this.userService.loadUser(id);
+		return ResponseEntity.ok(userDto);
+	}
+	
 	
 
 }
